@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,36 +14,6 @@ import {Calendar} from 'react-native-calendars';
 
 const {width} = Dimensions.get('window');
 
-const dummyCompletedEvents = [
-  {
-    id: '1',
-    name: 'Spring Festival',
-    date: '2024-05-15',
-    images: [
-      require('../assets/spring-festival-1.jpeg'),
-      require('../assets/spring-festival-2.jpeg'),
-    ],
-  },
-  {
-    id: '2',
-    name: 'Community Workshop',
-    date: '2024-05-20',
-    images: [
-      require('../assets/community-workshop-1.jpeg'),
-      require('../assets/community-workshop-2.webp'),
-    ],
-  },
-  {
-    id: '3',
-    name: 'Neighborhood Potluck',
-    date: '2024-05-25',
-    images: [
-      require('../assets/neighborhood-potluck-1.webp'),
-      require('../assets/neighborhood-potluck-2.jpeg'),
-    ],
-  },
-];
-
 export default function CompletedEventsScreen() {
   const navigation = useNavigation();
   const [dateRange, setDateRange] = useState({
@@ -53,26 +23,38 @@ export default function CompletedEventsScreen() {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [selectedStartDate, setSelectedStartDate] = useState('');
   const [selectedEndDate, setSelectedEndDate] = useState('');
+  const [completedEvents, setCompletedEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const renderEventItem = ({item}) => (
-    <TouchableOpacity
-      style={styles.eventItem}
-      onPress={() => navigation.navigate('EventGallery', {eventId: item.id})}>
-      <Text style={styles.eventName}>{item.name}</Text>
-      <Text style={styles.eventDate}>{item.date}</Text>
-      <View style={styles.imageGrid}>
-        {item.images.map((image, index) => (
-          <Image
-            key={index}
-            source={image}
-            style={styles.thumbnail}
-            resizeMode="cover"
-          />
-        ))}
-      </View>
-    </TouchableOpacity>
-  );
+  // Fetch completed events from the backend
+  useEffect(() => {
+    const fetchCompletedEvents = async () => {
+      try {
+        const response = await fetch(
+          'http://192.168.29.106:3001/api/events/completed-events',
+        );
+        console.log('API Response:', response); // Log response to check if it's correct
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Fetched completed events:', data); // Log the fetched data
+        setCompletedEvents(data);
+      } catch (err) {
+        console.error('Error fetching events:', err);
+        setError('Failed to fetch completed events: ' + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompletedEvents();
+  }, []);
+
+  // Handle date range selection
   const onDayPress = day => {
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
       setSelectedStartDate(day.dateString);
@@ -92,9 +74,37 @@ export default function CompletedEventsScreen() {
     }
   };
 
-  const filteredEvents = dummyCompletedEvents.filter(
-    event => event.date >= dateRange.start && event.date <= dateRange.end,
+  // Filter events by date range
+  const filteredEvents = completedEvents.filter(
+    event =>
+      event.event_date >= dateRange.start && event.event_date <= dateRange.end,
   );
+
+  const renderEventItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.eventItem}
+      onPress={() => navigation.navigate('EventGallery', {eventId: item.id})}>
+      <Text style={styles.eventName}>{item.event_title}</Text>
+      <Text style={styles.eventDate}>{item.event_date}</Text>
+      <View style={styles.imageGrid}>
+        <Image
+          source={{
+            uri: `http://192.168.29.106:3001/uploads/${item.event_image}`,
+          }}
+          style={styles.thumbnail}
+          resizeMode="cover"
+        />
+      </View>
+    </TouchableOpacity>
+  );
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>{error}</Text>;
+  }
 
   return (
     <View style={styles.container}>
@@ -114,12 +124,12 @@ export default function CompletedEventsScreen() {
       <FlatList
         data={filteredEvents}
         renderItem={renderEventItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         contentContainerStyle={styles.eventList}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>
-              No events found in selected date range
+              No events found in the selected date range
             </Text>
           </View>
         )}

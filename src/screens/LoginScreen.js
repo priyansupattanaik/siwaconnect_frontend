@@ -22,6 +22,11 @@ const LoginScreen = () => {
 
   // Handle login
   const handleLogin = async () => {
+    if (!mobile || !password) {
+      Alert.alert('Error', 'Please enter both mobile number and password');
+      return;
+    }
+
     try {
       const response = await fetch(
         'http://192.168.29.106:5001/api/auth/login',
