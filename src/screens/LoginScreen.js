@@ -42,12 +42,10 @@ const LoginScreen = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // Store token and user data using AuthContext
         login(result);
         Alert.alert('Login successful', 'Welcome back!');
-        navigation.navigate('Main'); // Navigate to the main screen
+        navigation.navigate('Main');
       } else {
-        // Handle error if credentials are incorrect
         Alert.alert('Error', result.message || 'Invalid credentials');
       }
     } catch (error) {

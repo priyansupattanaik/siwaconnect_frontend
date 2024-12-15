@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  ScrollView, // Import ScrollView for scrolling in landscape mode
+  ScrollView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

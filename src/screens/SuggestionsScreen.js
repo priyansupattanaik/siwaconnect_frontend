@@ -7,18 +7,17 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import axios from 'axios'; // Add axios for API requests
-import {useAuth} from '../contexts/AuthContext'; // Import useAuth to get the user's mobile number
+import axios from 'axios';
+import {useAuth} from '../contexts/AuthContext';
 
 export default function SuggestionsScreen() {
   const [suggestion, setSuggestion] = useState('');
-  const {user, loading} = useAuth(); // Access logged-in user
+  const {user, loading} = useAuth();
   const [name, setName] = useState('');
 
-  // Debugging: Check user data on component load
   useEffect(() => {
     console.log('Logged-in user:', user);
-    // Correctly set the name if it's nested inside user.user
+
     setName(user?.user?.name || '');
   }, [user]);
 
@@ -37,7 +36,7 @@ export default function SuggestionsScreen() {
     }
 
     if (!user || !user.user?.mobile) {
-      console.error('User object:', user); // Debugging
+      console.error('User object:', user);
       Alert.alert('Error', 'User not found, please log in again.');
       return;
     }
@@ -47,14 +46,14 @@ export default function SuggestionsScreen() {
         'http://192.168.29.106:5001/api/suggestions',
         {
           name,
-          mobile: user.user.mobile, // Use the nested mobile value
+          mobile: user.user.mobile,
           suggestion,
         },
       );
 
       if (response.status === 200) {
         Alert.alert('Success', 'Your suggestion has been submitted!');
-        setSuggestion(''); // Clear the input
+        setSuggestion('');
       } else {
         Alert.alert('Error', 'Failed to submit the suggestion');
       }
@@ -96,19 +95,19 @@ export default function SuggestionsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF4E9', // Light beige background for the whole screen
+    backgroundColor: '#FAF4E9',
     paddingHorizontal: 20,
     paddingTop: 30,
   },
   suggestionContainer: {
-    backgroundColor: '#ffffff', // White background for the input container
+    backgroundColor: '#ffffff',
     padding: 20,
     borderRadius: 15,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 5},
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 5, // For Android shadow
+    elevation: 5,
     marginBottom: 20,
   },
   suggestionHeader: {
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   submitButton: {
-    backgroundColor: '#D9C8A1', // Light beige button color
+    backgroundColor: '#D9C8A1',
     paddingVertical: 12,
     borderRadius: 10,
     marginTop: 15,

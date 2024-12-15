@@ -27,21 +27,20 @@ export default function CompletedEventsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch completed events from the backend
   useEffect(() => {
     const fetchCompletedEvents = async () => {
       try {
         const response = await fetch(
           'http://192.168.29.106:3001/api/events/completed-events',
         );
-        console.log('API Response:', response); // Log response to check if it's correct
+        console.log('API Response:', response);
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('Fetched completed events:', data); // Log the fetched data
+        console.log('Fetched completed events:', data);
         setCompletedEvents(data);
       } catch (err) {
         console.error('Error fetching events:', err);
@@ -54,7 +53,6 @@ export default function CompletedEventsScreen() {
     fetchCompletedEvents();
   }, []);
 
-  // Handle date range selection
   const onDayPress = day => {
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
       setSelectedStartDate(day.dateString);
@@ -74,7 +72,6 @@ export default function CompletedEventsScreen() {
     }
   };
 
-  // Filter events by date range
   const filteredEvents = completedEvents.filter(
     event =>
       event.event_date >= dateRange.start && event.event_date <= dateRange.end,
@@ -108,7 +105,6 @@ export default function CompletedEventsScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Fixed Date Range at the top */}
       <View style={styles.dateRangeContainer}>
         <Text style={styles.dateRangeText}>
           Date Range: {dateRange.start} - {dateRange.end}
@@ -120,7 +116,6 @@ export default function CompletedEventsScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* FlatList for Event List */}
       <FlatList
         data={filteredEvents}
         renderItem={renderEventItem}
@@ -135,7 +130,6 @@ export default function CompletedEventsScreen() {
         )}
       />
 
-      {/* Modal for Calendar Filter */}
       <Modal
         visible={isCalendarVisible}
         transparent={true}
@@ -191,7 +185,7 @@ const styles = StyleSheet.create({
   dateRangeText: {
     color: 'black',
     fontWeight: 'bold',
-    maxWidth: width * 0.6, // Limit text width
+    maxWidth: width * 0.6,
   },
   filterButton: {
     backgroundColor: '#007AFF',

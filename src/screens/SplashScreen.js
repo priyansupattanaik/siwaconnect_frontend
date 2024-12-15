@@ -8,10 +8,9 @@ export default function SplashScreen() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Navigate to 'Login' after 5000ms (adjust as needed)
     const timer = setTimeout(() => {
       navigation.navigate('Login');
-    }, 5000); // Adjust this value to match the video length
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [navigation]);
@@ -20,11 +19,11 @@ export default function SplashScreen() {
     <View style={styles.container}>
       <Video
         ref={videoRef}
-        source={require('../assets/splash_video.mp4.mp4')} // Make sure the path is correct
+        source={require('../assets/splash_video.mp4.mp4')}
         style={styles.video}
         resizeMode="cover"
         repeat={false}
-        onEnd={() => navigation.navigate('Login')} // Handle video end event
+        onEnd={() => navigation.navigate('Login')}
       />
     </View>
   );

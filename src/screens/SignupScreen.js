@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useAuth} from '../contexts/AuthContext'; // Importing AuthContext
+import {useAuth} from '../contexts/AuthContext';
 
 const {width, height} = Dimensions.get('window');
 
 export default function SignupScreen() {
   const navigation = useNavigation();
-  const {login} = useAuth(); // Destructuring the login function from AuthContext
+  const {login} = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobileNumber] = useState('');
@@ -26,7 +26,6 @@ export default function SignupScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Handle signup form submission
   const handleSignup = async () => {
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
@@ -58,7 +57,7 @@ export default function SignupScreen() {
       console.log('API Response:', result);
 
       if (response.ok) {
-        login(result); // Assuming 'result' contains user data or token
+        login(result);
         Alert.alert('Signup successful', 'You can now log in!');
         navigation.navigate('Login');
       } else {
@@ -152,10 +151,7 @@ export default function SignupScreen() {
           />
         </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSignup} // Call handleSignup on press
-        >
+        <TouchableOpacity style={styles.button} onPress={handleSignup}>
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
 

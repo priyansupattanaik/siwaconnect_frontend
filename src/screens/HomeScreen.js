@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient'; // Importing from react-native-linear-gradient
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -17,17 +17,16 @@ export default function HomeScreen() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch events from the backend when the component mounts
     const fetchEvents = async () => {
       try {
         const response = await fetch(
           'http://192.168.29.106:3001/api/events/all-events',
-        ); // Adjust URL based on your backend endpoint
+        );
         if (!response.ok) {
           throw new Error('Failed to fetch events');
         }
         const data = await response.json();
-        setEvents(data); // Assuming data is an array of events
+        setEvents(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -36,14 +35,14 @@ export default function HomeScreen() {
     };
 
     fetchEvents();
-  }, []); // Empty dependency array means this runs only once when the component mounts
+  }, []);
 
   const renderEventItem = ({item}) => (
     <TouchableOpacity
       style={styles.eventItem}
       onPress={() => navigation.navigate('EventDetails', {eventId: item.id})}>
       <LinearGradient
-        colors={['#F9F6F1', '#D1B39E']} // Gradient background
+        colors={['#F9F6F1', '#D1B39E']}
         style={styles.eventGradient}>
         <Text style={styles.eventName}>{item.event_title}</Text>
         <Text style={styles.eventDate}>
@@ -80,7 +79,6 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Horizontal scrollable upcoming events */}
       <View style={styles.notificationBar}>
         <Text style={styles.notificationText}>Upcoming Events:</Text>
         <FlatList
@@ -106,16 +104,16 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF4E9', // Beige background for a warm look
+    backgroundColor: '#FAF4E9',
   },
   notificationBar: {
-    backgroundColor: '#D9C8A1', // Light beige background for the notification bar
+    backgroundColor: '#D9C8A1',
     padding: 10,
     borderBottomWidth: 2,
-    borderBottomColor: '#D1B39E', // Subtle border to differentiate
+    borderBottomColor: '#D1B39E',
   },
   notificationText: {
-    color: '#3C3C3C', // Darker color for contrast
+    color: '#3C3C3C',
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
@@ -124,11 +122,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   upcomingEventItem: {
-    backgroundColor: '#F9F6F1', // A very light beige background for the events
+    backgroundColor: '#F9F6F1',
     borderRadius: 10,
     padding: 10,
     marginRight: 10,
-    shadowColor: '#D1B39E', // Light shadow for a soft look
+    shadowColor: '#D1B39E',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   eventGradient: {
-    backgroundColor: '#F9F6F1', // Gradient background for the event item
+    backgroundColor: '#F9F6F1',
     borderRadius: 10,
     padding: 15,
     shadowColor: '#D1B39E',

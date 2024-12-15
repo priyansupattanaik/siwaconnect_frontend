@@ -23,7 +23,6 @@ export default function ProfileScreen({navigation}) {
     address: '',
   });
 
-  // Add a console log to check if user data is being received
   useEffect(() => {
     console.log('User data in ProfileScreen:', user);
 
@@ -79,15 +78,15 @@ export default function ProfileScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF4E9', // Light beige background for the whole screen
-    paddingTop: 20, // Adds space for the top part of the screen to avoid overlap with tab navigator
+    backgroundColor: '#FAF4E9',
+    paddingTop: 20,
   },
   header: {
     alignItems: 'center',
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
-    backgroundColor: '#D9C8A1', // Light beige header background
+    backgroundColor: '#D9C8A1',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     shadowColor: '#000',
@@ -106,15 +105,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#333', // Dark text for contrast
+    color: '#333',
   },
   username: {
     fontSize: 14,
-    color: '#666', // Lighter color for the username
+    color: '#666',
   },
   section: {
     padding: 15,
-    backgroundColor: '#FFFFFF', // White background for sections
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
     borderTopLeftRadius: 10,
@@ -124,27 +123,27 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    elevation: 3, // For Android shadow effect
+    elevation: 3,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#333', // Dark text for better readability
+    color: '#333',
   },
   detail: {
     fontSize: 14,
     marginBottom: 5,
-    color: '#555', // Dark gray color for text
+    color: '#555',
   },
   suggestion: {
     fontSize: 14,
     marginBottom: 8,
     fontStyle: 'italic',
-    color: '#333', // Dark gray for suggestions
+    color: '#333',
   },
   logoutButton: {
-    backgroundColor: '#007AFF', // Blue color for logout button
+    backgroundColor: '#007AFF',
     paddingVertical: 12,
     paddingHorizontal: 20,
     margin: 20,

@@ -7,21 +7,20 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({children}) => {
-  const [user, setUser] = useState(null); // Set user state to null initially
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Load user data from AsyncStorage when the app starts
   useEffect(() => {
     const loadUserData = async () => {
       try {
         const storedUser = await AsyncStorage.getItem('user');
         if (storedUser) {
-          setUser(JSON.parse(storedUser)); // Parse and set the user data if available
+          setUser(JSON.parse(storedUser));
         }
       } catch (error) {
         console.error('Failed to load user data:', error);
       } finally {
-        setLoading(false); // Set loading to false after loading user data
+        setLoading(false);
       }
     };
 
@@ -29,10 +28,10 @@ export const AuthProvider = ({children}) => {
   }, []);
 
   const login = async userData => {
-    console.log('Logging in user:', userData); // Check user data in the console
-    setUser(userData); // Set the user data in context
+    console.log('Logging in user:', userData);
+    setUser(userData);
     try {
-      await AsyncStorage.setItem('user', JSON.stringify(userData)); // Persist user data in AsyncStorage
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
       Alert.alert('Login Successful', 'Welcome back!');
     } catch (error) {
       console.error('Failed to save user data:', error);
@@ -40,9 +39,9 @@ export const AuthProvider = ({children}) => {
   };
 
   const logout = async () => {
-    setUser(null); // Clear user data from context
+    setUser(null);
     try {
-      await AsyncStorage.removeItem('user'); // Remove user data from AsyncStorage
+      await AsyncStorage.removeItem('user');
       Alert.alert('Logged out', 'You have successfully logged out');
     } catch (error) {
       console.error('Failed to clear user data:', error);
